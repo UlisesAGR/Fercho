@@ -15,6 +15,7 @@ import com.example.clinicaldecisions.data.db.entities.MedicineEntity
     version = 1,
     exportSchema = false,
 )
+
 abstract class ClinicalDecisionsDb : RoomDatabase() {
     abstract fun getMedicineDao(): MedicineDao
 }
