@@ -102,10 +102,8 @@ class EditFragment : Fragment() {
 
     private fun openCreateDialog() {
         val dialog = CreateDialogFragment.newInstance(
-            callback = object : CreateDialogFragment.OnClickListener {
-                override fun clickDialog(medicine: MedicineModel) {
-                    containerViewModel.createMedicine(medicine)
-                }
+            onClickListener = { medicine ->
+                containerViewModel.createMedicine(medicine)
             }
         )
         dialog.show(childFragmentManager, CreateDialogFragment.CREATE_DIALOG_FRAGMENT_TAG)

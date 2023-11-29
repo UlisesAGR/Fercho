@@ -36,7 +36,7 @@ class CreateDialogFragment : DialogFragment() {
     }
 
     private val containerViewModel: ContainerViewModel by activityViewModels()
-    private lateinit var onClickListener: OnClickListener
+    private lateinit var onClickListener: (MedicineModel) -> Unit
     private var image: String = ""
 
     private val requestPermissionLauncher =
@@ -70,7 +70,7 @@ class CreateDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen)
     }
 
     private fun initUi() {
@@ -114,7 +114,7 @@ class CreateDialogFragment : DialogFragment() {
 
     private fun setFormEvents(state: FormEvents) = with(binding) {
         if (state == FormEvents.COMPLETE) {
-            onClickListener.clickDialog(
+            onClickListener.invoke(
                 MedicineModel(
                     id = 0,
                     nameTextField.text.toString(),
@@ -126,21 +126,13 @@ class CreateDialogFragment : DialogFragment() {
         }
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        onClickListener = listener
-    }
-
-    interface OnClickListener {
-        fun clickDialog(medicine: MedicineModel)
-    }
-
     companion object {
         const val CREATE_DIALOG_FRAGMENT_TAG = "CreateDialogFragment"
         fun newInstance(
-            callback: OnClickListener,
+            onClickListener: (MedicineModel) -> Unit,
         ): CreateDialogFragment {
             return CreateDialogFragment().apply {
-                setOnClickListener(callback)
+                this.onClickListener = onClickListener
             }
         }
     }
