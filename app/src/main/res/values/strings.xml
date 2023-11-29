@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Clinical Decisions</string>
+    <string name="enter_the_name_of_the_medication">Enter the name of the medication</string>
+    <string name="search">Search</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="back">Back</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="description_of_medicine">Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine. Description of medicine.</string>
+    <string name="image">Image</string>
+    <string name="edit">Edit</string>
+    <string name="no_data_found">No data found</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="delete">Delete</string>
+    <string name="are_you_sure_to_delete">¿Are you sure to delete?</string>
+    <string name="create">Create</string>
+    <string name="add">Add</string>
+    <string name="add_new_medicine_to_list">Add new medicine to list</string>
+    <string name="empty_image">Empty Image</string>
+    <string name="empty_name">Empty name</string>
+    <string name="empty_description">Empty description</string>
+    <string name="update">Update</string>
+    <string name="update_your_medication_data">Update your medication data</string>
+    <string name="empty_list">Empty list</string>
+    <string name="here_you_will_see_your_list_of_medications">Here you will see your list of medications</string>
+    <string name="medicine_created_successful">Medicine created successful</string>
+    <string name="error_create_the_medicine">Error create the medicine</string>
+    <string name="medicine_updated_successful">Medicine updated successful</string>
+    <string name="error_update_the_medicine">Error update the medicine</string>
+    <string name="medicine_deleted_successful">Medicine deleted successful</string>
+    <string name="error_delete_the_medicine">Error delete the medicine</string>
+    <string name="error_get_medicine_list">Error get medicine list</string>
+    <string name="accept_the_permission">To use app you must accept the permission</string>
+    <string name="not_select_image">Could not select image</string>
+    <string name="here_you_can_add_your_medications">Here you can add your medications</string>
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.clinicaldecisions.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_detailActivity"
+            app:destination="@id/detailActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.clinicaldecisions.ui.edit.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" />
+
+    <activity
+        android:id="@+id/detailActivity"
+        android:name="com.example.clinicaldecisions.ui.detail.DetailActivity"
+        android:label="activity_detail"
+        tools:layout="@layout/activity_detail">
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </activity>
+
+    <activity
+        android:id="@+id/containerActivity"
+        android:name="com.example.clinicaldecisions.ui.container.ContainerActivity"
+        android:label="activity_container"
+        tools:layout="@layout/activity_container" />
+
+    <dialog
+        android:id="@+id/createDialogFragment"
+        android:name="com.example.clinicaldecisions.ui.dialog.CreateDialogFragment"
+        android:label="fragment_create_dialog"
+        tools:layout="@layout/fragment_create_dialog" />
+
+    <dialog
+        android:id="@+id/updateDialogFragment"
+        android:name="com.example.clinicaldecisions.ui.dialog.UpdateDialogFragment"
+        android:label="fragment_update_dialog"
+        tools:layout="@layout/fragment_update_dialog" />
+
+</navigation>
