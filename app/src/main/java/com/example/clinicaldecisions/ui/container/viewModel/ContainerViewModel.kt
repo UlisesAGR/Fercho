@@ -9,19 +9,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clinicaldecisions.data.provider.ContainerProvider
 import com.example.clinicaldecisions.domain.model.MedicineModel
-import com.example.clinicaldecisions.domain.repository.ContainerRepository
+import com.example.clinicaldecisions.domain.usecase.container.CreateMedicineUseCase
+import com.example.clinicaldecisions.domain.usecase.container.DeleteMedicineUseCase
+import com.example.clinicaldecisions.domain.usecase.container.ReadAllMedicinesUseCase
+import com.example.clinicaldecisions.domain.usecase.container.UpdateMedicineUseCase
 import com.example.clinicaldecisions.utils.FormEvents
 import com.example.clinicaldecisions.utils.ResponseStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ContainerViewModel @Inject constructor(
-    private val containerRepository: ContainerRepository,
+    private val createMedicine: CreateMedicineUseCase,
+    private val readAllMedicines: ReadAllMedicinesUseCase,
+    private val updateMedicine: UpdateMedicineUseCase,
+    private val deleteMedicine: DeleteMedicineUseCase,
     private val containerProvider: ContainerProvider,
 ) : ViewModel() {
 
@@ -29,14 +36,20 @@ class ContainerViewModel @Inject constructor(
     val containerState: StateFlow<ContainerState> = _containerState
 
     init {
-        getAllMedicines()
+        readAllMedicines()
     }
 
-    private fun getAllMedicines() = viewModelScope.launch {
-        containerRepository.getAllMedicines()
-            .collect { medicines ->
-                _containerState.update { state -> state.copy(list = medicines) }
+    private fun readAllMedicines() = viewModelScope.launch {
+        readAllMedicines.invoke().catch { exception ->
+            _containerState.update {
+                it.copy(
+                    message = exception.message ?: containerProvider.getErrorReadLabel(),
+                )
             }
+
+        }.collect { medicines ->
+            _containerState.update { state -> state.copy(list = medicines) }
+        }
     }
 
     fun validateFormCreate(
@@ -58,7 +71,7 @@ class ContainerViewModel @Inject constructor(
     }
 
     fun createMedicine(medicine: MedicineModel) = viewModelScope.launch {
-        containerRepository.createMedicine(medicine)
+        createMedicine.invoke(medicine)
             .collect { response ->
                 when (response) {
                     is ResponseStatus.Loading -> {}
@@ -100,7 +113,7 @@ class ContainerViewModel @Inject constructor(
     }
 
     fun updateMedicine(article: MedicineModel) = viewModelScope.launch {
-        containerRepository.updateMedicine(article)
+        updateMedicine.invoke(article)
             .collect { response ->
                 when (response) {
                     is ResponseStatus.Loading -> {}
@@ -124,7 +137,7 @@ class ContainerViewModel @Inject constructor(
     }
 
     fun deleteMedicine(article: MedicineModel) = viewModelScope.launch {
-        containerRepository.deleteMedicine(article)
+        deleteMedicine.invoke(article)
             .collect { response ->
                 when (response) {
                     is ResponseStatus.Loading -> {}

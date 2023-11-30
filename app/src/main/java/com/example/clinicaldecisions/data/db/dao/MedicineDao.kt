@@ -16,17 +16,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MedicineDao {
-    @Query("SELECT * FROM medicine_table WHERE name=:name")
-    fun getMedicine(name: String): MedicineEntity
-
-    @Query("SELECT * FROM medicine_table")
-    fun getAllMedicines(): Flow<List<MedicineEntity>>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun createMedicine(article: MedicineEntity)
 
+    @Query("SELECT * FROM medicine_table")
+    fun readAllMedicines(): Flow<List<MedicineEntity>>
+
     @Query("SELECT * FROM medicine_table WHERE name=:name")
-    fun isExistingMedicine(name: String): Boolean
+    fun readMedicine(name: String): MedicineEntity
 
     @Update
     fun updateMedicine(article: MedicineEntity)

@@ -10,5 +10,5 @@ import com.example.clinicaldecisions.utils.ResponseStatus
 import kotlinx.coroutines.flow.Flow
 
 interface DetailRepository {
-    suspend fun getMedicine(name: String): Flow<ResponseStatus<MedicineModel>>
+    suspend fun readMedicine(name: String): Flow<ResponseStatus<MedicineModel>>
 }

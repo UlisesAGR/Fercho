@@ -5,49 +5,37 @@
  */
 package com.example.clinicaldecisions.data.repository
 
-import com.example.clinicaldecisions.data.db.dao.MedicineDao
+import com.example.clinicaldecisions.data.source.ContainerDataSource
 import com.example.clinicaldecisions.domain.model.MedicineModel
-import com.example.clinicaldecisions.domain.model.toDomain
-import com.example.clinicaldecisions.domain.model.toEntity
 import com.example.clinicaldecisions.domain.repository.ContainerRepository
 import com.example.clinicaldecisions.utils.ResponseStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ContainerRepositoryImpl @Inject constructor(
+    private val containerDataSource: ContainerDataSource,
     private val dispatcher: CoroutineDispatcher,
-    private val medicineDao: MedicineDao,
 ) : ContainerRepository {
-
-    override suspend fun getAllMedicines(): Flow<List<MedicineModel>> =
-        medicineDao.getAllMedicines().map { list -> list.map { it.toDomain() } }
 
     override suspend fun createMedicine(article: MedicineModel) = flow {
         emit(ResponseStatus.Loading())
         try {
-            emit(ResponseStatus.Success(medicineDao.createMedicine(article.toEntity())))
+            emit(ResponseStatus.Success(containerDataSource.createMedicine(article)))
         } catch (ex: Exception) {
             emit(ResponseStatus.Error(ex.message))
         }
     }.flowOn(dispatcher)
 
-    override suspend fun isExistingMedicine(name: String) = flow {
-        emit(ResponseStatus.Loading())
-        try {
-            emit(ResponseStatus.Success(medicineDao.isExistingMedicine(name)))
-        } catch (ex: Exception) {
-            emit(ResponseStatus.Error(ex.message))
-        }
-    }.flowOn(dispatcher)
+    override suspend fun readAllMedicines(): Flow<List<MedicineModel>> =
+        containerDataSource.readAllMedicines()
 
     override suspend fun updateMedicine(article: MedicineModel) = flow {
         emit(ResponseStatus.Loading())
         try {
-            emit(ResponseStatus.Success(medicineDao.updateMedicine(article.toEntity())))
+            emit(ResponseStatus.Success(containerDataSource.updateMedicine(article)))
         } catch (ex: Exception) {
             emit(ResponseStatus.Error(ex.message))
         }
@@ -56,7 +44,7 @@ class ContainerRepositoryImpl @Inject constructor(
     override suspend fun deleteMedicine(article: MedicineModel) = flow {
         emit(ResponseStatus.Loading())
         try {
-            emit(ResponseStatus.Success(medicineDao.deleteMedicine(article.toEntity())))
+            emit(ResponseStatus.Success(containerDataSource.deleteMedicine(article)))
         } catch (ex: Exception) {
             emit(ResponseStatus.Error(ex.message))
         }

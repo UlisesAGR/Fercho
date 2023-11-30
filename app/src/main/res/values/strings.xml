@@ -26,6 +26,7 @@
     <string name="here_you_will_see_your_list_of_medications">Here you will see your list of medications</string>
     <string name="medicine_created_successful">Medicine created successful</string>
     <string name="error_create_the_medicine">Error create the medicine</string>
+    <string name="error_read_the_medicine">Error read the medicine</string>
     <string name="medicine_updated_successful">Medicine updated successful</string>
     <string name="error_update_the_medicine">Error update the medicine</string>
     <string name="medicine_deleted_successful">Medicine deleted successful</string>

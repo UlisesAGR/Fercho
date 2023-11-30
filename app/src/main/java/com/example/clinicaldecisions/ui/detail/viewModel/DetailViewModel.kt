@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clinicaldecisions.data.provider.DetailProvider
 import com.example.clinicaldecisions.domain.model.MedicineModel
-import com.example.clinicaldecisions.domain.repository.DetailRepository
+import com.example.clinicaldecisions.domain.usecase.detail.ReadMedicineUseCase
 import com.example.clinicaldecisions.utils.DetailEvents
 import com.example.clinicaldecisions.utils.ResponseStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val detailRepository: DetailRepository,
+    private val readMedicine: ReadMedicineUseCase,
     private val detailProvider: DetailProvider,
 ) : ViewModel() {
 
@@ -29,7 +29,7 @@ class DetailViewModel @Inject constructor(
     val detailState: StateFlow<DetailState> = _detailState
 
     fun getMedicine(name: String) = viewModelScope.launch {
-        detailRepository.getMedicine(name)
+        readMedicine.invoke(name)
             .collect { response ->
                 when (response) {
                     is ResponseStatus.Loading ->

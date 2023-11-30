@@ -37,7 +37,7 @@ class UpdateDialogFragment : DialogFragment() {
     }
 
     private val containerViewModel: ContainerViewModel by activityViewModels()
-    private lateinit var onClickListener: OnClickListener
+    private lateinit var onClickListener: (MedicineModel) -> Unit
     private lateinit var medicine: MedicineModel
     private var image: String = ""
 
@@ -130,7 +130,7 @@ class UpdateDialogFragment : DialogFragment() {
 
     private fun setFormEvents(state: FormEvents) = with(binding) {
         if (state == FormEvents.COMPLETE) {
-            onClickListener.clickDialog(
+            onClickListener.invoke(
                 MedicineModel(
                     medicine.id,
                     nameTextField.text.toString(),
@@ -142,23 +142,15 @@ class UpdateDialogFragment : DialogFragment() {
         }
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        onClickListener = listener
-    }
-
-    interface OnClickListener {
-        fun clickDialog(medicine: MedicineModel)
-    }
-
     companion object {
         const val UPDATE_DIALOG_FRAGMENT_TAG = "UpdateDialogFragment"
         fun newInstance(
             medicine: MedicineModel,
-            callback: OnClickListener,
+            onClickListener: (MedicineModel) -> Unit,
         ): UpdateDialogFragment {
             return UpdateDialogFragment().apply {
                 this.medicine = medicine
-                setOnClickListener(callback)
+                this.onClickListener = onClickListener
             }
         }
     }

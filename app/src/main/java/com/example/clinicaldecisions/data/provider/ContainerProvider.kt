@@ -21,6 +21,9 @@ class ContainerProvider @Inject constructor(
     fun getErrorCreatedLabel(): String =
         resource.getString(R.string.error_create_the_medicine)
 
+    fun getErrorReadLabel(): String =
+        resource.getString(R.string.error_read_the_medicine)
+
     fun getUpdatedSuccessfulLabel(): String =
         resource.getString(R.string.medicine_updated_successful)
 

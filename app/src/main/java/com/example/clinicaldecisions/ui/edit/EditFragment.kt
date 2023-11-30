@@ -102,8 +102,8 @@ class EditFragment : Fragment() {
 
     private fun openCreateDialog() {
         val dialog = CreateDialogFragment.newInstance(
-            onClickListener = { medicine ->
-                containerViewModel.createMedicine(medicine)
+            onClickListener = { selectedMedicine ->
+                containerViewModel.createMedicine(selectedMedicine)
             }
         )
         dialog.show(childFragmentManager, CreateDialogFragment.CREATE_DIALOG_FRAGMENT_TAG)
@@ -112,10 +112,8 @@ class EditFragment : Fragment() {
     private fun openUpdateDialog(medicine: MedicineModel) {
         val dialog = UpdateDialogFragment.newInstance(
             medicine,
-            callback = object : UpdateDialogFragment.OnClickListener {
-                override fun clickDialog(medicine: MedicineModel) {
-                    containerViewModel.updateMedicine(medicine)
-                }
+            onClickListener = { selectedMedicine ->
+                containerViewModel.updateMedicine(selectedMedicine)
             }
         )
         dialog.show(childFragmentManager, UpdateDialogFragment.UPDATE_DIALOG_FRAGMENT_TAG)
