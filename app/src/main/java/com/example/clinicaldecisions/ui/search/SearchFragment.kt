@@ -14,14 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.clinicaldecisions.R
 import com.example.clinicaldecisions.databinding.FragmentSearchBinding
-import com.example.clinicaldecisions.domain.model.EmptyStateModel
 import com.example.clinicaldecisions.ui.container.viewModel.ContainerViewModel
 import com.example.clinicaldecisions.ui.search.adapter.SearchAdapter
 import com.example.clinicaldecisions.utils.collect
-import com.example.clinicaldecisions.utils.gone
-import com.example.clinicaldecisions.utils.show
+import com.example.clinicaldecisions.utils.setEmptyState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -82,32 +79,12 @@ class SearchFragment : Fragment() {
     private fun setFlows() {
         collect(containerViewModel.containerState) { state ->
             searchAdapter.addList(state.list)
-            setEmptyState()
+            binding.emptyState.setEmptyState(searchAdapter.itemCount)
         }
     }
 
-    private fun setEmptyState() = with(binding) {
-        if (searchAdapter.itemCount == 0) {
-            emptyState.apply {
-                show(
-                    EmptyStateModel(
-                        image = R.drawable.il_medical,
-                        title = context.getString(R.string.empty_list),
-                        subTitle = context.getString(R.string.here_you_will_see_your_list_of_medications),
-                    )
-                )
-                show()
-            }
-            mainLayout.gone()
-        } else {
-            emptyState.gone()
-            mainLayout.show()
-        }
-    }
-
-    private fun resetView() {
+    private fun resetView() =
         binding.nameTextField.setText("")
-    }
 
     override fun onPause() {
         super.onPause()

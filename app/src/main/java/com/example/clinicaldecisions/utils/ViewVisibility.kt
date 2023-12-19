@@ -20,3 +20,11 @@ fun View.gone(): View {
     }
     return this
 }
+
+fun View.setEmptyState(itemCount: Int): View {
+    visibility = if (itemCount == 0) {
+        View.VISIBLE
+    } else
+        View.GONE
+    return this
+}

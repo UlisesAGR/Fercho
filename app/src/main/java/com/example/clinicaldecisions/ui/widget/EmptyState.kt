@@ -9,36 +9,49 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import com.example.clinicaldecisions.R
 import com.example.clinicaldecisions.databinding.EmptyStateBinding
-import com.example.clinicaldecisions.domain.model.EmptyStateModel
 import com.example.clinicaldecisions.utils.Constants.ANIMATION_ALFA_HIDDEN
 import com.example.clinicaldecisions.utils.Constants.ANIMATION_ALFA_VISIBLE
 import com.example.clinicaldecisions.utils.show
 
 class EmptyState @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet,
-    defStyleAttr: Int = 0,
-) : LinearLayout(context, attrs, defStyleAttr) {
+    attrs: AttributeSet? = null,
+) : LinearLayout(context, attrs) {
 
     private val binding by lazy(LazyThreadSafetyMode.NONE) {
         EmptyStateBinding.inflate(LayoutInflater.from(context), this, true)
     }
 
-    fun show(emptyStateModel: EmptyStateModel) {
-        emptyStateModel.apply {
-            showEmptyState()
-            setupImage(image)
-            setupTitle(title)
-            setupSubTitle(subTitle)
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.EmptyState,
+            0,
+            0,
+        ).apply {
+            try {
+                showEmptyState()
+                setImage(getResourceId(R.styleable.EmptyState_image, 0))
+                setTitle(getString(R.styleable.EmptyState_title))
+                setSubTitle(getString(R.styleable.EmptyState_subtitle))
+            } finally {
+                recycle()
+            }
         }
     }
 
-    private fun setupImage(image: Int) = with(binding) {
-        imageView.setImageResource(image)
+    private fun setImage(image: Int) = with(binding) {
+        with(binding.imageView) {
+            if (image != 0) {
+                imageView.setImageResource(image)
+                show()
+            }
+        }
     }
 
-    private fun setupTitle(title: String?) {
+    private fun setTitle(title: String?) {
         with(binding.titleTxt) {
             if (!title.isNullOrEmpty()) {
                 text = title
@@ -47,7 +60,7 @@ class EmptyState @JvmOverloads constructor(
         }
     }
 
-    private fun setupSubTitle(subTitle: String?) {
+    private fun setSubTitle(subTitle: String?) {
         with(binding.subTitleTxt) {
             if (!subTitle.isNullOrEmpty()) {
                 text = subTitle

@@ -13,16 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.clinicaldecisions.R
 import com.example.clinicaldecisions.databinding.FragmentEditBinding
-import com.example.clinicaldecisions.domain.model.EmptyStateModel
 import com.example.clinicaldecisions.domain.model.MedicineModel
 import com.example.clinicaldecisions.ui.container.viewModel.ContainerViewModel
 import com.example.clinicaldecisions.ui.dialog.CreateDialogFragment
 import com.example.clinicaldecisions.ui.dialog.UpdateDialogFragment
 import com.example.clinicaldecisions.ui.edit.adapter.EditAdapter
 import com.example.clinicaldecisions.utils.collect
-import com.example.clinicaldecisions.utils.gone
 import com.example.clinicaldecisions.utils.materialDialog
-import com.example.clinicaldecisions.utils.show
+import com.example.clinicaldecisions.utils.setEmptyState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,23 +79,8 @@ class EditFragment : Fragment() {
     private fun setFlows() {
         collect(containerViewModel.containerState) { state ->
             editAdapter.setList(state.list)
-            setEmptyState()
+            binding.emptyState.setEmptyState(editAdapter.itemCount)
         }
-    }
-
-    private fun setEmptyState() = with(binding) {
-        if (editAdapter.itemCount == 0)
-            emptyState.apply {
-                show(
-                    EmptyStateModel(
-                        image = R.drawable.il_science,
-                        title = context.getString(R.string.empty_list),
-                        subTitle = context.getString(R.string.here_you_can_add_your_medications),
-                    )
-                )
-                show()
-            }
-        else emptyState.gone()
     }
 
     private fun openCreateDialog() {
